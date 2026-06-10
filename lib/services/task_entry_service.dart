@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:todo_app/models/todo_model.dart';
+import 'package:todo_app/services/notification_service.dart';
 
 class TaskEntryServices{
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -35,13 +36,16 @@ class TaskEntryServices{
             ).toList()
         );
     }
-    Future<void> deleteTaskEntry(String taskId)async{
+    Future<void> deleteTaskEntry(TodoTask task)async{
+        
         final user = _auth.currentUser;
         if(user==null){
             throw Exception("User not logged in");
         }
+        //cancel notification if exists
+        await NotificationService().notifications.cancel(id: task.notificationId!);
         await _firestore.collection('users').
-        doc(user.uid).collection('tasks').doc(taskId).delete();
+        doc(user.uid).collection('tasks').doc(task.id).delete();
     }
     Future<void> updateTaskEntry(String taskId,TodoTask updatedTask)async{
         final user = _auth.currentUser;

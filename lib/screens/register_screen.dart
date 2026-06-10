@@ -108,11 +108,13 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                     SizedBox(height:isDesktop?32:24),
                     TextFormField(
                       controller:_usernameEditingController,
-                      keyboardType: TextInputType.emailAddress,
+                      keyboardType: TextInputType.name,
                       decoration:InputDecoration(
                          labelText:"Username",
                          prefixIcon: Icon(Icons.person_add_outlined,color:Colors.deepPurple),
-                         border:OutlineInputBorder(),
+                         border:OutlineInputBorder(
+                          borderRadius:BorderRadius.circular(8),
+                         ),
                       ),
                       validator:(value){
                         if(value==null||value.isEmpty){
@@ -131,7 +133,9 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                       decoration:InputDecoration(
                          labelText:"Email",
                          prefixIcon: Icon(Icons.email_outlined,color:Colors.deepPurple),
-                         border:OutlineInputBorder(),
+                         border:OutlineInputBorder(
+                          borderRadius:BorderRadius.circular(8),
+                         ),
                       ),
                       validator:(value){
                         if(value==null||value.isEmpty){
@@ -151,7 +155,9 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                       decoration:InputDecoration(
                         labelText: "Password",
                         prefixIcon: Icon(Icons.lock_outlined,color:Colors.deepPurple),
-                        border:OutlineInputBorder(),
+                        border:OutlineInputBorder(
+                          borderRadius:BorderRadius.circular(8),
+                        ),
                       ),
                       validator: (value){
                         if(value==null || value.isEmpty){

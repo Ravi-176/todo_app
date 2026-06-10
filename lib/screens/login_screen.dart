@@ -29,6 +29,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
        final authService = ref.read(authServiceProvider);
        await authService.signIn(_emailEditingController.text.trim(),
         _passwordEditingController.text.trim());
+        // ignore: use_build_context_synchronously
         Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
          builder: (context)=>const HomeScreen()), 
@@ -106,7 +107,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       decoration:InputDecoration(
                          labelText:"Email",
                          prefixIcon: Icon(Icons.email_outlined,color:Colors.deepPurple),
-                         border:OutlineInputBorder(),
+                         border:OutlineInputBorder(
+                          borderRadius:BorderRadius.circular(8),
+                         ),
                       ),
                       validator:(value){
                         if(value==null||value.isEmpty){

@@ -41,7 +41,7 @@ class _TodoEntryCardState extends ConsumerState<TodoEntryCard> {
                 mainAxisAlignment:MainAxisAlignment.end,
                 children:[
                  IconButton(onPressed: ()async{
-                  await ref.read(taskServiceProvider).deleteTaskEntry(widget.task.id);
+                  await ref.read(taskServiceProvider).deleteTaskEntry(widget.task);
               },
                 icon:Icon(Icons.delete,
                 color:Colors.red)

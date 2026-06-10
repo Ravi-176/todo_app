@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app/providers/auth_service_provider.dart';
 import 'package:todo_app/providers/task_entry_provider.dart';
 import 'package:todo_app/screens/login_screen.dart';
+import 'package:todo_app/services/notification_service.dart';
 import 'package:todo_app/widgets/todo_bottom_sheet.dart';
 import 'package:todo_app/widgets/todo_entry_card.dart';
 
@@ -16,6 +17,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>{
   Future<void> _logout()async{
      final authService = ref.read(authServiceProvider);
      await authService.logout();
+     // ignore: use_build_context_synchronously
      Navigator.pushAndRemoveUntil(context, 
      MaterialPageRoute(builder: (context)=>const LoginScreen()), (route)=>false);
   }
@@ -83,9 +85,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen>{
               onSave: (taskEntry)async{
                 try{
                 final service = ref.read(taskServiceProvider);
-                return await service.addTaskEntry(taskEntry);
+                await service.addTaskEntry(taskEntry);
+                if(taskEntry.reminderEnabled&&taskEntry.reminderTime!=null){
+                  await NotificationService().scheduleNotification(id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
+                   title: taskEntry.title,
+                   body: taskEntry.content,
+                   scheduledTime: taskEntry.reminderTime!
+                   );
+                }
               }
               catch(e){
+                // ignore: use_build_context_synchronously
                 ScaffoldMessenger.of(context).
                 showSnackBar(SnackBar(content: Text("Error saving task:$e",
                 style:TextStyle(color:Colors.white)),
